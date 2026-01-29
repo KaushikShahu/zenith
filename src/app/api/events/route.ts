@@ -102,92 +102,110 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // 1. Verify who is making the request
     const authResult = await verifyAuth(request);
-    
+
     if (!authResult.success) {
-      return NextResponse.json(
-        { error: authResult.error || "Unauthorized" }, 
+    return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
         { status: 401 }
-      );
+    );
     }
 
     const userId = authResult.user!.id;
+    const userRole = authResult.user!.role;
+
+    // 2. Check Permissions: Allow 'media' and 'media_head' roles alongside others
+    const allowedRoles = ["admin", "coordinator", "co_coordinator", "secretary", "media", "media_head"];
+    if (!allowedRoles.includes(userRole)) {
+    return NextResponse.json(
+        { error: "Forbidden: You do not have permission to create events" },
+        { status: 403 }
+    );
+    }
+
     const body = await request.json();
-    const { 
-      title, 
-      description, 
-      event_date, 
-      location, 
+    // 3. Destructure the incoming data - notice we now accept event_time and gallery_images
+    const {
+      title,
+      description,
+      event_date,
+      event_time, // NEW: Time is separate from date in your DB
+      location,
       club_id,
       max_attendees,
-      registration_required,
-      is_public,
-      event_type,
-      tags,
-      banner_url
+      status,
+      image_url,
+      banner_image_url,
+      gallery_images // NEW: Array of image URLs
     } = body;
 
-    // Validate required fields
-    if (!title || !event_date || !location || !club_id) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
+    // 4. Validate that we have the bare minimum data for the DB constraints (NOT NULL columns)
+    if (!title || !event_date || !event_time || !location || !club_id) {
+    return NextResponse.json(
+        { error: "Missing required fields: title, event_date, event_time, location, and club_id are required" },
         { status: 400 }
-      );
+    );
+    }
+
+    // 5. Logic Check: Ensure users can only post for their own club (unless Admin)
+    if (userRole !== "admin") {
+    const userResult = await db.query('SELECT club_id FROM users WHERE id = $1', [userId]);
+    const userClubId = userResult.rows[0]?.club_id
+    if (userClubId !== club_id) {
+        return NextResponse.json(
+        { error: "Forbidden: You can only create events for your own club" },
+        { status: 403 }
+        );
+    }
     }
 
     try {
       const eventId = require('crypto').randomUUID();
-      
+
+      // 6. The SQL Query: This is the critical part that maps to your 'events' table
       const result = await db.query(`
-        INSERT INTO events (
-          id, title, description, event_date, location, club_id, creator_id,
-          max_attendees, registration_required, is_public, event_type, tags, banner_url,
-          status, created_at, updated_at
-        )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'published', NOW(), NOW())
-        RETURNING *
+          INSERT INTO events (
+          id, title, description, event_date, event_time, location, club_id, created_by,
+          max_attendees, status, image_url, banner_image_url, gallery_images,
+          created_at, updated_at
+          )
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW(), NOW())
+          RETURNING *
       `, [
-        eventId, 
-        title, 
-        description || null, 
-        event_date, 
-        location, 
-        club_id, 
-        userId,
-        max_attendees || null,
-        registration_required || false,
-        is_public !== false, // default to true
-        event_type || 'workshop',
-        tags ? JSON.stringify(tags) : null,
-        banner_url || null
+          eventId,
+          title,
+          description || '',
+          event_date,
+          event_time,
+          location,
+          club_id,
+          userId,
+          max_attendees || null,
+          status || 'upcoming',
+          image_url || null,
+          banner_image_url || null,
+          // PostgreSQL JSONB needs a stringified JSON array
+          gallery_images ? (Array.isArray(gallery_images) ? JSON.stringify(gallery_images) : gallery_images) : '[]'
       ]);
 
       console.log('✅ Event created successfully:', result.rows[0].id);
 
-      // Log audit event for event creation
+      // 7. Audit Logging (Keep existing logging pattern)
       await AuditLogger.logEventAction(
         'create',
         eventId,
         userId,
-        undefined, // no old values
+        undefined,
         {
-          title,
-          description,
-          event_date,
-          location,
-          club_id,
-          max_attendees,
-          registration_required,
-          is_public,
-          event_type,
-          tags,
-          banner_url,
-          status: 'published'
+          title, description, event_date, event_time, location, club_id,
+          max_attendees, status: status || 'upcoming',
+          image_url, banner_image_url, gallery_images
         },
         request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined,
         request.headers.get('user-agent') || undefined
       );
-
+   
       return NextResponse.json({
         success: true,
         data: result.rows[0]

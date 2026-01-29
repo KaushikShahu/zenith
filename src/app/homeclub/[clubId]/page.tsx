@@ -505,50 +505,51 @@ export default function PublicClubPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-zenith-card rounded-xl shadow-lg border border-zenith-border hover:shadow-xl transition-all duration-300 overflow-hidden group"
                 >
-                  {event.banner_image_url && (
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={event.banner_image_url}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-4 right-4">
-                        <div className="bg-zenith-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
-                          Upcoming
+                  <Link href={`/events/${event.id}`} className="block bg-zenith-card rounded-xl shadow-lg border border-zenith-border hover:shadow-xl hover:border-zenith-accent transition-all duration-300 overflow-hidden group h-full">
+                    {event.banner_image_url && (
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={event.banner_image_url}
+                          alt={event.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute top-4 right-4">
+                          <div className="bg-zenith-accent text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Upcoming
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold text-zenith-primary mb-3 group-hover:text-zenith-accent transition-colors">
+                        {event.title}
+                      </h3>
+                      {event.description && (
+                        <p className="text-zenith-secondary mb-4 line-clamp-2">
+                          {event.description}
+                        </p>
+                      )}
+                      <div className="space-y-2 text-sm text-zenith-muted">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-2 text-zenith-accent" />
+                          {new Date(event.event_date).toLocaleDateString()}
+                        </div>
+                        <div className="flex items-center">
+                          <Clock className="w-4 h-4 mr-2 text-zenith-accent" />
+                          {new Date(event.event_date).toLocaleTimeString()}
+                        </div>
+                        <div className="flex items-center">
+                          <MapPin className="w-4 h-4 mr-2 text-zenith-accent" />
+                          {event.location}
+                        </div>
+                        <div className="flex items-center">
+                          <Users className="w-4 h-4 mr-2 text-zenith-accent" />
+                          {event.max_attendees} max attendees
                         </div>
                       </div>
                     </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-zenith-primary mb-3">
-                      {event.title}
-                    </h3>
-                    {event.description && (
-                      <p className="text-zenith-secondary mb-4 line-clamp-2">
-                        {event.description}
-                      </p>
-                    )}
-                    <div className="space-y-2 text-sm text-zenith-muted">
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2 text-zenith-accent" />
-                        {new Date(event.event_date).toLocaleDateString()}
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="w-4 h-4 mr-2 text-zenith-accent" />
-                        {new Date(event.event_date).toLocaleTimeString()}
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-2 text-zenith-accent" />
-                        {event.location}
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-2 text-zenith-accent" />
-                        {event.max_attendees} max attendees
-                      </div>
-                    </div>
-                  </div>
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -580,46 +581,47 @@ export default function PublicClubPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-zenith-card rounded-xl shadow-lg border border-zenith-border hover:shadow-xl transition-all duration-300 overflow-hidden group"
                 >
-                  {event.banner_image_url && (
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={event.banner_image_url}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-4 right-4">
-                        <div className="bg-gray-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                          Completed
+                  <Link href={`/events/${event.id}`} className="block bg-zenith-card rounded-xl shadow-lg border border-zenith-border hover:shadow-xl hover:border-zenith-accent transition-all duration-300 overflow-hidden group h-full">
+                    {event.banner_image_url && (
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={event.banner_image_url}
+                          alt={event.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute top-4 right-4">
+                          <div className="bg-gray-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Completed
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold text-zenith-primary mb-3 group-hover:text-zenith-accent transition-colors">
+                        {event.title}
+                      </h3>
+                      {event.description && (
+                        <p className="text-zenith-secondary mb-4 line-clamp-2">
+                          {event.description}
+                        </p>
+                      )}
+                      <div className="space-y-2 text-sm text-zenith-muted">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                          {new Date(event.event_date).toLocaleDateString()}
+                        </div>
+                        <div className="flex items-center">
+                          <MapPin className="w-4 h-4 mr-2 text-gray-500" />
+                          {event.location}
+                        </div>
+                        <div className="flex items-center">
+                          <Users className="w-4 h-4 mr-2 text-gray-500" />
+                          {event.max_attendees} attendees
                         </div>
                       </div>
                     </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-zenith-primary mb-3">
-                      {event.title}
-                    </h3>
-                    {event.description && (
-                      <p className="text-zenith-secondary mb-4 line-clamp-2">
-                        {event.description}
-                      </p>
-                    )}
-                    <div className="space-y-2 text-sm text-zenith-muted">
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                        {new Date(event.event_date).toLocaleDateString()}
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-2 text-gray-500" />
-                        {event.location}
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-2 text-gray-500" />
-                        {event.max_attendees} attendees
-                      </div>
-                    </div>
-                  </div>
+                  </Link>
                 </motion.div>
               ))}
 
@@ -630,42 +632,43 @@ export default function PublicClubPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: (completedEvents.length + index) * 0.1 }}
-                  className="bg-zenith-card rounded-xl shadow-lg border border-zenith-border hover:shadow-xl transition-all duration-300 overflow-hidden group"
                 >
-                  {event.banner_image_url && (
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={event.banner_image_url}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-4 right-4">
-                        <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                          Success
+                  <Link href={`/events/${event.id}`} className="block bg-zenith-card rounded-xl shadow-lg border border-zenith-border hover:shadow-xl hover:border-zenith-accent transition-all duration-300 overflow-hidden group h-full">
+                    {event.banner_image_url && (
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={event.banner_image_url}
+                          alt={event.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute top-4 right-4">
+                          <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Success
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold text-zenith-primary mb-3 group-hover:text-zenith-accent transition-colors">
+                        {event.title}
+                      </h3>
+                      {event.description && (
+                        <p className="text-zenith-secondary mb-4 line-clamp-2">
+                          {event.description}
+                        </p>
+                      )}
+                      <div className="space-y-2 text-sm text-zenith-muted">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                          {new Date(event.event_date).toLocaleDateString()}
+                        </div>
+                        <div className="flex items-center">
+                          <MapPin className="w-4 h-4 mr-2 text-gray-500" />
+                          {event.location}
                         </div>
                       </div>
                     </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-zenith-primary mb-3">
-                      {event.title}
-                    </h3>
-                    {event.description && (
-                      <p className="text-zenith-secondary mb-4 line-clamp-2">
-                        {event.description}
-                      </p>
-                    )}
-                    <div className="space-y-2 text-sm text-zenith-muted">
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                        {new Date(event.event_date).toLocaleDateString()}
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-2 text-gray-500" />
-                        {event.location}
-                      </div>
-                    </div>
-                  </div>
+                  </Link>
                 </motion.div>
               ))}
             </div>

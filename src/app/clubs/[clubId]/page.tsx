@@ -48,10 +48,11 @@ interface ClubData {
     id: string;
     title: string;
     description: string;
-    date: string;
-    time: string;
+    event_date: string;
+    event_time: string;
     location: string;
-    attendeeCount: number;
+    max_attendees?: number;
+    attendeeCount?: number;
   }>;
   posts: Array<{
     id: string;
@@ -186,6 +187,7 @@ export default function ClubPage() {
     
     // Fallback: Check if user has a privileged role
     const privilegedRoles = [
+      'admin',
       'innovation_head',
       'president',
       'vice_president',
@@ -193,10 +195,9 @@ export default function ClubPage() {
       'treasurer',
       'outreach_coordinator',
       'media_head',
-      'club_coordinator',
+      'media',
       'co_coordinator',
       'coordinator',
-      'co-coordinator'
     ];
     
     const userRole = auth.user.role.toLowerCase();
@@ -337,29 +338,44 @@ export default function ClubPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
 
-            {/* Events Section */}
-            <div className="bg-card rounded-xl p-6 shadow-lg">
-              <h2 className="text-xl font-semibold text-primary mb-6 flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                Recent Events
-              </h2>
-              <div className="space-y-4">
-                {events.length > 0 ? (
-                  events.slice(0, 3).map((event) => (
-                    <div key={event.id} className="border border-custom rounded-lg p-4">
-                      <h3 className="font-semibold text-primary mb-2">{event.title}</h3>
-                      <p className="text-secondary text-sm mb-3">{event.description}</p>
-                      <div className="flex items-center justify-between text-sm text-muted">
-                        <span>{new Date(event.date).toLocaleDateString()}</span>
-                        <span>{event.attendeeCount} attendees</span>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-secondary text-center py-4">No events yet</p>
-                )}
-              </div>
+           {/* Events Section */}
+           <div className="bg-card rounded-xl p-6 shadow-lg">
+             <div className="flex items-center justify-between mb-6">
+               <h2 className="text-xl font-semibold text-primary flex items-center gap-2">
+                 <Calendar className="w-5 h-5" />
+                 Recent Events
+               </h2>
+               {canCreatePost() && (
+                 <button
+                  onClick={() => router.push(`/clubs/${club.id}/events/create`)}
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all"
+                >
+                  <Plus className="w-4 h-4" />
+                  Create Event
+                </button>
+              )}
             </div>
+            <div className="space-y-4">
+              {events.length > 0 ? (
+                events.slice(0, 3).map((event) => (
+                  <Link 
+                    href={`/events/${event.id}`} 
+                    key={event.id} 
+                    className="block border border-custom rounded-lg p-4 hover:border-blue-500 transition-colors group"
+                  >
+                    <h3 className="font-semibold text-primary mb-2 group-hover:text-blue-500">{event.title}</h3>
+                    <p className="text-secondary text-sm mb-3 line-clamp-2">{event.description}</p>
+                    <div className="flex items-center justify-between text-sm text-muted">
+                      <span>{new Date(event.event_date).toLocaleDateString()}</span>
+                      <span>{event.max_attendees || event.attendeeCount || 0} max attendees</span>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p className="text-secondary text-center py-4">No events yet</p>
+              )}
+            </div>
+          </div>
 
             {/* Posts Section */}
             <div className="bg-card rounded-xl p-6 shadow-lg">
