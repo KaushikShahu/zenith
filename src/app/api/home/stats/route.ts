@@ -9,7 +9,10 @@ export async function GET() {
       SELECT 
         (SELECT COUNT(*) FROM clubs) as total_clubs,
         (SELECT COUNT(*) FROM users) as total_users,
-        (SELECT COUNT(*) FROM events WHERE event_date >= CURRENT_DATE) as upcoming_events,
+        (SELECT COUNT(*) FROM events WHERE event_date < CURRENT_DATE) as events_conducted,
+        (SELECT COUNT(*) FROM events
+          WHERE event_date >= date_trunc('month', CURRENT_DATE - INTERVAL '1 month')
+          AND event_date < date_trunc('month', CURRENT_DATE)) as monthly_events,
         (SELECT COUNT(*) FROM posts) as total_posts
     `;
     const statsResult = await queryRawSQL(statsQuery);
@@ -131,7 +134,8 @@ export async function GET() {
     const stats = {
       totalClubs: parseInt(statsResult.rows[0].total_clubs),
       totalMembers: parseInt(statsResult.rows[0].total_users),
-      upcomingEvents: parseInt(statsResult.rows[0].upcoming_events),
+      eventsConducted: parseInt(statsResult.rows[0].events_conducted),
+      monthlyEvents: parseInt(statsResult.rows[0].monthly_events),
       totalPosts: parseInt(statsResult.rows[0].total_posts),
     };
 

@@ -114,7 +114,8 @@ interface Post {
 interface HomeStats {
   totalClubs: number;
   totalMembers: number;
-  upcomingEvents: number;
+  eventsConducted: number;
+  monthlyEvents: number;
   totalPosts: number;
 }
 
@@ -557,7 +558,7 @@ export default function HomePage() {
                     </div>
                     <div>
                       <div className="text-2xl font-bold">
-                        {stats.upcomingEvents}+
+                        {stats.monthlyEvents}+
                       </div>
                       <div className="text-sm opacity-80">Monthly Events</div>
                     </div>
@@ -596,10 +597,10 @@ export default function HomePage() {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold stat-events">
-                {stats.upcomingEvents}
+                {stats.eventsConducted}
               </div>
               <div className="text-sm text-zenith-muted">
-                Upcoming Events
+                Events Conducted
               </div>
             </div>
             <div className="text-center">
@@ -814,7 +815,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* UPCOMING EVENTS SECTION - Latest events and workshops */}
+      {/* EVENT CALENDAR SECTION - Latest events and workshops */}
       <section id="events" className="py-20 bg-zenith-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -824,10 +825,10 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-zenith-brand mb-4">
-              Upcoming Events
+              Event Calendar
             </h2>
             <p className="text-xl text-zenith-secondary">
-              Don&apos;t miss out on these exciting opportunities
+              A comprehensive look at the events and workshops driving student growth
             </p>
           </motion.div>
 
@@ -1063,10 +1064,10 @@ export default function HomePage() {
                 <Calendar className="w-8 h-8 text-white" />
               </div>
               <div className="text-3xl font-bold text-zenith-primary">
-                {stats.upcomingEvents}
+                {stats.eventsConducted}
               </div>
               <div className="text-sm text-zenith-secondary">
-                Upcoming Events
+                Events Conducted
               </div>
             </div>
             <div className="text-center">
