@@ -41,6 +41,8 @@ interface ClubData {
     icon: string;
     color: string;
     memberCount: number;
+    evenrtCount: number;
+    postCount: number;
     coordinator?: { 
       name: string;
       email?: string;
@@ -340,11 +342,11 @@ export default function PublicClubPage() {
                 <div className="text-sm text-zenith-muted">Active Members</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold">{events.length}</div>
-                <div className="text-sm text-zenith-muted">Upcoming Events</div>
+                <div className="text-3xl font-bold">{club.eventCount}</div>
+                <div className="text-sm text-zenith-muted">Events Conducted</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold">{posts.length}</div>
+                <div className="text-3xl font-bold">{club.postCount}</div>
                 <div className="text-sm text-zenith-muted">Recent Posts</div>
               </div>
             </motion.div>
@@ -545,7 +547,7 @@ export default function PublicClubPage() {
                         </div>
                         <div className="flex items-center">
                           <Users className="w-4 h-4 mr-2 text-zenith-accent" />
-                          {event.max_attendees} max attendees
+                          {event.max_attendees} Participants
                         </div>
                       </div>
                     </div>
@@ -590,11 +592,6 @@ export default function PublicClubPage() {
                           alt={event.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        <div className="absolute top-4 right-4">
-                          <div className="bg-gray-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            Completed
-                          </div>
-                        </div>
                       </div>
                     )}
                     <div className="p-6">
@@ -617,7 +614,7 @@ export default function PublicClubPage() {
                         </div>
                         <div className="flex items-center">
                           <Users className="w-4 h-4 mr-2 text-gray-500" />
-                          {event.max_attendees} attendees
+                          {event.max_attendees} Participants
                         </div>
                       </div>
                     </div>
@@ -641,11 +638,6 @@ export default function PublicClubPage() {
                           alt={event.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        <div className="absolute top-4 right-4">
-                          <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                            Success
-                          </div>
-                        </div>
                       </div>
                     )}
                     <div className="p-6">

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Upload, X, Image as ImageIcon, Loader2, ArrowLeft } from 'lucide-react';
 
 interface EventFormProps {
   initialData?: any;
@@ -29,7 +29,7 @@ export default function EventForm({ initialData, clubId, isEditing = false }: Ev
   const [formData, setFormData] = useState({
     title: initialData?.title || '',
     description: initialData?.description || '',
-    event_date: initialData?.event_date ? new Date(initialData.event_date).toISOString().split('T')[0] : '',
+    event_date: initialData?.event_date ? new Date(initialData.event_date).toLocaleDateString('en-CA') : '',
     event_time: initialData?.event_time || '',
     location: initialData?.location || '',
     max_attendees: initialData?.max_attendees || '',
@@ -155,28 +155,36 @@ export default function EventForm({ initialData, clubId, isEditing = false }: Ev
   };
 
   return (
-    <div className="bg-zenith-card p-8 rounded-xl shadow-lg border border-zenith-border">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-zenith-primary">
-          {isEditing ? 'Edit Event' : 'Create New Event'}
-        </h2>
-        {isEditing && (
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-all text-sm font-medium"
-          >
-            <X className="w-4 h-4" />
-            Delete Event
-          </button>
-        )}
-      </div>
-      
-      {error && (
-        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500">
-          {error}
+    <div className="space-y-6">
+      <button
+        onClick={() => router.back()}
+        className="flex items-center text-zenith-secondary hover:text-zenith-primary transition-colors font-medium"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back
+      </button>
+      <div className="bg-zenith-card p-8 rounded-xl shadow-lg border border-zenith-border">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-zenith-primary">
+            {isEditing ? 'Edit Event' : 'Create New Event'}
+          </h2>
+          {isEditing && (
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-all text-sm font-medium"
+            >
+              <X className="w-4 h-4" />
+              Delete Event
+            </button>
+          )}
         </div>
-      )}
+
+        {error && (
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500">
+            {error}
+          </div>
+        )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Banner Image Section */}
@@ -266,7 +274,7 @@ export default function EventForm({ initialData, clubId, isEditing = false }: Ev
 
           {/* Max Attendees */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-zenith-primary">Max Attendees (Optional)</label>
+            <label className="block text-sm font-medium text-zenith-primary">Participants</label>
             <input
               type="number"
               className="w-full px-4 py-2 bg-zenith-bg border border-zenith-border rounded-lg text-zenith-primary focus:outline-none focus:ring-2 focus:ring-zenith-accent"
@@ -354,5 +362,6 @@ export default function EventForm({ initialData, clubId, isEditing = false }: Ev
         </div>
       </form>
     </div>
+  </div>
   );
 }

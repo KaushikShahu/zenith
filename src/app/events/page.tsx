@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { 
   Calendar, 
   Users, 
@@ -284,7 +285,7 @@ function CalendarView({
                         title={`${event.title} (${eventStatus})`}
                       >
                         <div className={`w-2 h-2 rounded-full ${getClubColor(event.club_id)}`} />
-                        <div className={`w-1 h-1 rounded-full ${getStatusColor(eventStatus, true)}`} />
+                        {/* <div className={`w-1 h-1 rounded-full ${getStatusColor(eventStatus, true)}`} /> */}
                       </div>
                     );
                   })}
@@ -305,6 +306,7 @@ function CalendarView({
         <div className="p-4 border-t zenith-border zenith-bg-section">
           <div className="flex justify-between items-center mb-3">
             <h4 className="text-sm font-medium zenith-text-primary">Club Colors</h4>
+            {/*
             <div className="flex items-center gap-4 text-xs zenith-text-secondary">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full bg-green-400" />
@@ -319,6 +321,7 @@ function CalendarView({
                 <span>Past</span>
               </div>
             </div>
+            */}
           </div>
           <div className="flex flex-wrap gap-4">
             {clubs.map(club => (
@@ -337,7 +340,8 @@ function CalendarView({
 export default function EventsPage() {
   const { user } = useAuth();
   const { showToast } = useToast();
-  
+  const router = useRouter();
+
   const [events, setEvents] = useState<Event[]>([]);
   const [clubs, setClubs] = useState<Club[]>([]);
   const [loading, setLoading] = useState(true);
@@ -520,10 +524,10 @@ export default function EventsPage() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
               <h1 className="text-4xl font-bold text-primary mb-2">
-                Events & Calendar
+                Event Calendar
               </h1>
               <p className="text-lg text-secondary">
-                Discover and join exciting events happening in your community
+                Discover exciting events happening in your community
               </p>
             </div>
             
@@ -539,7 +543,7 @@ export default function EventsPage() {
           </div>
         </motion.div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -598,6 +602,7 @@ export default function EventsPage() {
             </CardContent>
           </Card>
         </motion.div>
+        */}
 
         {/* Filters */}
         <motion.div
@@ -621,6 +626,7 @@ export default function EventsPage() {
 
                 {/* Filters */}
                 <div className="flex gap-4">
+                  {/*
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
@@ -633,6 +639,7 @@ export default function EventsPage() {
                       </option>
                     ))}
                   </select>
+                  */}
 
                   <select
                     value={selectedClub}
@@ -716,7 +723,10 @@ export default function EventsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className="zenith-bg-card zenith-border hover:shadow-lg transition-all duration-300">
+                  <Card
+                        className="zenith-bg-card zenith-border hover:shadow-lg transition-all duration-300 cursor-pointer"
+                        onClick={() => router.push(`/events/${event.id}`)}
+                      >
                     {/* List View Event Card */}
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
@@ -724,9 +734,11 @@ export default function EventsPage() {
                           <div className="flex items-center gap-3 mb-2">
                             <div className={`w-4 h-4 rounded-full ${getClubColor(event.club_id)}`} />
                             <h3 className="text-lg font-semibold zenith-text-primary">{event.title}</h3>
+                            {/*
                             <Badge className={`${getStatusColor(getEventStatus(event))} border text-xs`}>
                               {getEventStatus(event)}
                             </Badge>
+                            */}
                           </div>
                           
                           <div className="flex items-center gap-4 text-sm zenith-text-secondary mb-3">
@@ -762,7 +774,7 @@ export default function EventsPage() {
                             <div className="flex items-center gap-2 text-xs zenith-text-secondary">
                               <div className="flex items-center gap-1">
                                 <Users className="w-3 h-3" />
-                                <span>{event.attendees_count || 0} attending</span>
+                                <span>{event.max_attendees || 0}+ Participants</span>
                               </div>
                             </div>
                           </div>
@@ -862,7 +874,8 @@ export default function EventsPage() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="zenith-bg-section rounded-lg p-4 border zenith-border"
+                      className="zenith-bg-section rounded-lg p-4 border zenith-border cursor-pointer hover:bg-zenith-hover transition-colors"
+                      onClick={() => router.push(`/events/${event.id}`)}
                     >
                       <div className="flex items-start gap-4">
                         <div className={`w-4 h-4 rounded-full ${getClubColor(event.club_id)} mt-1`} />
@@ -890,13 +903,15 @@ export default function EventsPage() {
                             )}
                             <div className="flex items-center gap-1">
                               <Users className="w-4 h-4" />
-                              <span>{event.attendees_count}</span>
+                              <span>{event.max_attendees}+ Participants</span>
                             </div>
                           </div>
                         </div>
+                        {/*
                         <Badge className={`${getStatusColor(getEventStatus(event))} border`}>
                           {getEventStatus(event)}
                         </Badge>
+                        */}
                       </div>
                     </motion.div>
                   ))}

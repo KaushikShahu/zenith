@@ -39,6 +39,7 @@ const authConfig: AuthGuardConfig = {
     '/contact',
     '/clubs', // Public club listing
     '/homeclub/[clubId]', // Public club pages
+    '/events', // Public event listing
     '/events/[id]', // Public event details
     '/founding-team', // Public founding team page
     '/loader-demo', // Demo page
@@ -57,7 +58,6 @@ const authConfig: AuthGuardConfig = {
     '/assignments/[id]',
     '/management',
     '/members',
-    '/events',
     '/onboarding',
     '/set-password',
     '/setup-2fa',

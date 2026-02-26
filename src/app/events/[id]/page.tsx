@@ -64,6 +64,14 @@ export default function EventDetailsPage() {
 
   return (
     <div className="min-h-screen bg-zenith-main py-10 px-4">
+      <div className="max-w-4xl mx-auto mb-6">
+        <button 
+          onClick={() => router.back()}
+          className="flex items-center text-zenith-secondary hover:text-zenith-primary transition-colors font-medium"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" /> Back
+        </button>
+      </div>
       <div className="max-w-4xl mx-auto bg-zenith-card rounded-2xl shadow-xl overflow-hidden border border-zenith-border">
         {/* Banner */}
         <div className="h-64 bg-zenith-bg relative">
@@ -113,7 +121,7 @@ export default function EventDetailsPage() {
             </div>
             <div className="flex items-center space-x-3 text-zenith-secondary">
               <Users className="w-5 h-5 text-green-500" />
-              <span>{event.attendeeCount} / {event.maxAttendees || '∞'} attending</span>
+              <span>{event.maxAttendees || '∞'}+ Participants</span>
             </div>
           </div>
 

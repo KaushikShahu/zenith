@@ -53,7 +53,7 @@ export async function GET(
       db.query('SELECT COUNT(*) as count FROM events WHERE club_id = $1', [clubId]),
       
       // Get posts count
-      db.query('SELECT COUNT(*) as count FROM posts WHERE club_id = $1 AND status = $2', [clubId, 'published']),
+      db.query('SELECT COUNT(*) as count FROM posts WHERE club_id = $1', [clubId]),
       
       // Get upcoming events (future events)
       db.query(`

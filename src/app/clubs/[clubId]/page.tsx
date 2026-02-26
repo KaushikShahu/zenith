@@ -367,7 +367,7 @@ export default function ClubPage() {
                     <p className="text-secondary text-sm mb-3 line-clamp-2">{event.description}</p>
                     <div className="flex items-center justify-between text-sm text-muted">
                       <span>{new Date(event.event_date).toLocaleDateString()}</span>
-                      <span>{event.max_attendees || event.attendeeCount || 0} max attendees</span>
+                      <span>{event.max_attendees || event.attendeeCount || 0}+ Participants</span>
                     </div>
                   </Link>
                 ))
